@@ -94,7 +94,6 @@ router.post('/verify',(req,res,next)=>{
     try{
         const user = jwt.verify(req.body.token,process.env.JWT_KEY);
         return res.status(200).json({
-            code: 1,
             user: user,
             message: 'Auth Successful'
         })
@@ -102,7 +101,6 @@ router.post('/verify',(req,res,next)=>{
     catch(error)
     {
         return res.status(401).json({
-            code: 0,
             message: 'Auth Failed'
         })
     }
