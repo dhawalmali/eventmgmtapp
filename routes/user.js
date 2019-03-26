@@ -13,12 +13,14 @@ router.post('/signup', (req, res, next) => {
         console.log(user);
         if (user) {
             return res.status(409).json({
+                code: 1,
                 message: 'Mail Exists'
             })
         } else {
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 if (err) {
                     return res.status(500).json({
+                        code: 0,
                         error: err
                     })
                 } else {
@@ -29,6 +31,7 @@ router.post('/signup', (req, res, next) => {
                         password: hash
                     }).then(result => {
                         res.status(201).json({
+                            code: 2,
                             message: 'User Created'
                         })
                     }).catch(err => {
@@ -53,6 +56,7 @@ router.post('/login', (req, res, next) => {
             bcrypt.compare(req.body.password, user.password, (err, result) => {
                 if (err) {
                     return res.status(401).json({
+                        code: 0,
                         message: 'Auth Failed'
                     })
                 }
@@ -65,18 +69,21 @@ router.post('/login', (req, res, next) => {
                         expiresIn: "1h"
                     })
                     return res.status(200).json({
+                        code: 2,
                         user: user,
                         message: 'Auth Successful',
                         token: token
                     })
                 } else {
                     return res.status(401).json({
+                        code: 0,
                         message: 'Auth Failed'
                     })
                 }
             })
         } else {
             return res.status(401).json({
+                code: 0,
                 message: 'Auth Failed'
             })
         }
@@ -87,6 +94,7 @@ router.post('/verify',(req,res,next)=>{
     try{
         const user = jwt.verify(req.body.token,process.env.JWT_KEY);
         return res.status(200).json({
+            code: 1,
             user: user,
             message: 'Auth Successful'
         })
@@ -94,6 +102,7 @@ router.post('/verify',(req,res,next)=>{
     catch(error)
     {
         return res.status(401).json({
+            code: 0,
             message: 'Auth Failed'
         })
     }
