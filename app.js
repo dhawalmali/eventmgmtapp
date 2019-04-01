@@ -3,9 +3,15 @@ const app = express();
 const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 const User = require('./models/user');
+const Category = require('./models/category');
+const Event  = require('./models/event');
+const Photo = require('./models/photo');
+const Tag = require('./models/tag');
+const Ticket = require('./models/ticket');
 const cors = require('cors');
 
 const userRoutes = require('./routes/user');
+const eventRoutes = require('./routes/event');
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -15,6 +21,15 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/user', userRoutes);
+app.use('/event',eventRoutes);
+
+User.hasMany(Event);
+Event.hasOne(Category);
+Event.hasMany(Photo);
+Event.hasMany(Tag);
+Event.hasOne(Category);
+Event.hasMany(Ticket);
+User.hasMany(Ticket);
 
 sequelize.sync().then(() => {
     app.listen(3000, () => {
