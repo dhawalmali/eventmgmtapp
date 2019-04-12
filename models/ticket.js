@@ -11,7 +11,6 @@ const Ticket = sequelize.define('ticket',{
     quantity: Sequelize.INTEGER,
     price: Sequelize.FLOAT,
     description: Sequelize.STRING,
-    startDate: Sequelize.DATE,
     endDate: Sequelize.DATE,
     type: Sequelize.INTEGER 
 })

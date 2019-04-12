@@ -106,4 +106,13 @@ router.post('/verify',(req,res,next)=>{
     }
 })
 
+router.get('/events/:userId',(req,res,next)=>{
+    const userId = req.params.userId;
+    User.findOne({where:{id:userId}}).then(user=>{
+        user.getEvents({raw: true}).then(events=>{
+            res.status(200).json(events);
+        })
+    })
+})
+
 module.exports = router;

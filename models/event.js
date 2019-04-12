@@ -14,7 +14,10 @@ const Event = sequelize.define('event', {
     lat: Sequelize.FLOAT,
     long: Sequelize.FLOAT,
     description: Sequelize.STRING,
-    rating: Sequelize.INTEGER,
+    rating: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
     time: Sequelize.STRING
 })
 
