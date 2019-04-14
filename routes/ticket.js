@@ -38,6 +38,7 @@ router.get('/:eventId', (req, res, next) => {
             id: eventId
         }
     }).then(event => {
+        let ename = event.dataValues.name;
         event.getTickets({
             raw: true
         }).then(tickets => {
@@ -45,6 +46,7 @@ router.get('/:eventId', (req, res, next) => {
                 tts.push(ticket)
             })
             res.status(200).json({
+                ename: ename,
                 tickets: tts
             })
         })
