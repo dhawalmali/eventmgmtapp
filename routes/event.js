@@ -240,6 +240,7 @@ router.get('/revenue/:eventId', (req, res, next) => {
 })
 
 router.post('/rating', (req, res, next) => {
+    console.log(req.body);
     const eventId = req.body.eventId;
     const r = req.body.rating;
     Event.findOne({

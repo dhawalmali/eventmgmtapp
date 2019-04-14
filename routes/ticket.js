@@ -165,6 +165,7 @@ router.get('/user/:userId', (req, res, next) => {
                             raw: true
                         }).then(e => {
                             count++;
+                            rts.eventId = e.id;
                             rts.name = e.name;
                             rts.date = e.date;
                             rts.total = rts.price * rts.quantity;
