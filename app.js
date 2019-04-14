@@ -35,7 +35,7 @@ Event.hasMany(Ticket);
 
 
 sequelize.sync().then(() => {
-    app.listen(3000, () => {
+    app.listen(process.env.PORT,process.env.IP, () => {
         console.log('Server started at port 3000!!!');
     })
 }).catch(err => {
