@@ -140,7 +140,8 @@ router.get('/qrcode/:ticketId', (req, res, next) => {
 
 router.get('/user/:userId', (req, res, next) => {
     const userId = req.params.userId;
-    let result = [];
+    let atickets = [];
+    let ptickets = [];
     let count = 0
     Buy.findAll({
         where: {
@@ -171,15 +172,21 @@ router.get('/user/:userId', (req, res, next) => {
                             rts.name = e.name;
                             rts.date = e.date;
                             rts.total = rts.price * rts.quantity;
-                            result.push(rts);
+                            if (new Date(rts.date) >= new Date())
+                                atickets.push(rts);
+                            else
+                                ptickets.push(rts)
                             if (count == tickets.length)
-                                res.status(200).json(result);
+                                res.status(200).json({
+                                    atickets: atickets,
+                                    ptickets: ptickets
+                                });
                         })
                     })
                 })
             })
         } else {
-            res.status(200).json([]);
+            res.status(200).json({});
         }
     })
 })

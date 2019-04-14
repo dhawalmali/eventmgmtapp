@@ -108,9 +108,20 @@ router.post('/verify',(req,res,next)=>{
 
 router.get('/events/:userId',(req,res,next)=>{
     const userId = req.params.userId;
+    let aevents = [];
+    let pevents = [];
     User.findOne({where:{id:userId}}).then(user=>{
         user.getEvents({raw: true}).then(events=>{
-            res.status(200).json(events);
+            events.forEach(event=>{
+                if(new Date(event.date) >= new Date())
+                    aevents.push(event);
+                else
+                    pevents.push(event);
+            })
+            res.status(200).json({
+                aevents:aevents,
+                pevents:pevents
+            });
         })
     })
 })
