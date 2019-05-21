@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Event = require('../models/event');
 
 router.post('/signup', (req, res, next) => {
     User.findOne({
@@ -110,19 +111,17 @@ router.get('/events/:userId',(req,res,next)=>{
     const userId = req.params.userId;
     let aevents = [];
     let pevents = [];
-    User.findOne({where:{id:userId}}).then(user=>{
-        user.getEvents({raw: true}).then(events=>{
-            events.forEach(event=>{
-                if(new Date(event.date) >= new Date())
-                    aevents.push(event);
-                else
-                    pevents.push(event);
-            })
-            res.status(200).json({
-                aevents:aevents,
-                pevents:pevents
-            });
+    Event.findAll({where:{userId: userId},include:[User],raw:true}).then(events=>{
+        events.forEach(event=>{
+            if(new Date(event.date) >= new Date())
+                aevents.push(event);
+            else
+                pevents.push(event);
         })
+        res.status(200).json({
+            aevents:aevents,
+            pevents:pevents
+        });
     })
 })
 

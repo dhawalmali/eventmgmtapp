@@ -5,6 +5,7 @@ const User = require('../models/user');
 const Tag = require('../models/tag');
 const Buy = require('../models/buy');
 const Sequelize = require('sequelize');
+const Rating = require('../models/rating');
 
 
 router.get('/', (req, res, next) => {
@@ -242,7 +243,13 @@ router.get('/revenue/:eventId', (req, res, next) => {
 router.post('/rating', (req, res, next) => {
     console.log(req.body);
     const eventId = req.body.eventId;
+    const userId = req.body.userId;
     const r = req.body.rating;
+    Rating.create({
+        userId: userId,
+        eventId: eventId,
+        flag: 1
+    })
     Event.findOne({
         where: {
             id: eventId
@@ -256,6 +263,21 @@ router.post('/rating', (req, res, next) => {
                 message: 'updated sucessfully'
             });
         })
+    })
+})
+
+router.post('/rating/flag',(req,res,next)=>{
+    const userId = req.body.userId;
+    const eventId = req.body.eventId;
+    Rating.findOne({where:{userId: userId,eventId: eventId},raw: true}).then((data)=>{
+        if(!data)
+        {
+            res.status(200).json({flag: 0})
+        }
+        else
+        {
+            res.status(200).json({flag: 1})
+        }
     })
 })
 

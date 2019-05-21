@@ -9,6 +9,7 @@ const Photo = require('./models/photo');
 const Tag = require('./models/tag');
 const Ticket = require('./models/ticket');
 const Buy = require('./models/buy');
+const Rating = require('./models/rating');
 const cors = require('cors');
 
 const userRoutes = require('./routes/user');
@@ -27,6 +28,7 @@ app.use('/event', eventRoutes);
 app.use('/ticket', ticketRoutes);
 
 User.hasMany(Event);
+Event.belongsTo(User);
 Event.hasOne(Category);
 Event.hasMany(Photo);
 Event.hasMany(Tag);
@@ -35,7 +37,7 @@ Event.hasMany(Ticket);
 
 
 sequelize.sync().then(() => {
-    app.listen(process.env.PORT,process.env.IP, () => {
+    app.listen(3000, () => {
         console.log('Server started at port 3000!!!');
     })
 }).catch(err => {
